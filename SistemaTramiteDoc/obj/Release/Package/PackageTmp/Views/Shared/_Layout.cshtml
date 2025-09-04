@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Sistema de tramite documentario</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/PluginsCSS")
+    @RenderSection("estilos", required: false)
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Inicio", "Inicio", "Solicitudes", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Content/PluginsJS")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> <!-- Agrega esta línea -->
+    <script src="~/Scripts/MiCarpeta/SolicitudesCrear.js"></script> <!-- Asegúrate de que tu script se carga después de Moment.js -->
+
+
+    <script type="text/javascript">
+        $.extend({ MisUrls: { url: {}, urls: function (a) { $.extend($.MisUrls.url, a); } } });
+
+        //CONTROLADOR Solicitudes
+        $.MisUrls.urls({ _ObtenerSolicitudes: '@Url.Action("Obtener", "Solicitudes")' });
+        $.MisUrls.urls({ _GuardarSolicitud: '@Url.Action("Guardar", "Solicitudes")' });
+        $.MisUrls.urls({ _ObtenerSolicitudesPorParametros: '@Url.Action("ObtenerPorExpDoc", "Solicitudes")' });
+
+        //CONTROLADOR DetalleSolicitud
+        $.MisUrls.urls({ _ObtenerSolicitud: '@Url.Action("Obtener", "DetalleSolicitud")' });
+        $.MisUrls.urls({ _ModificarSolicitudes: '@Url.Action("Modificar", "DetalleSolicitud")' });
+        $.MisUrls.urls({ _ModificarSolicitudesDetalle: '@Url.Action("ModificarDetalle", "DetalleSolicitud")' });
+
+        //CONTROLADOR SubSolicituddes
+
+        $.MisUrls.urls({ _ObtenerSubSolicitudes: '@Url.Action("Guardar", "SubSolicitudes")' });
+
+
+
+        //lenguaje español datatable
+        $.MisUrls.urls({
+            Url_datatable_spanish: '@Url.Content("~/content/plugins/datatables/js/datatable_spanish.json")'
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

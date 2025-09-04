@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\a2019\\OneDrive\\Desktop\\Documentos\\Trabajo\\Gilat\\SistemaTramiteDoc\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{45675895-7C47-419C-A9D4-37CD09F6126C}|SistemaTramiteDoc\\SistemaTramiteDoc.csproj|c:\\users\\a2019\\onedrive\\desktop\\documentos\\trabajo\\gilat\\sistematramitedoc\\sistematramitedoc\\views\\solicitudes\\inicio.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{45675895-7C47-419C-A9D4-37CD09F6126C}|SistemaTramiteDoc\\SistemaTramiteDoc.csproj|solutionrelative:sistematramitedoc\\views\\solicitudes\\inicio.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Inicio.cshtml",
+              "DocumentMoniker": "C:\\Users\\a2019\\OneDrive\\Desktop\\Documentos\\Trabajo\\Gilat\\SistemaTramiteDoc\\SistemaTramiteDoc\\Views\\Solicitudes\\Inicio.cshtml",
+              "RelativeDocumentMoniker": "SistemaTramiteDoc\\Views\\Solicitudes\\Inicio.cshtml",
+              "ToolTip": "C:\\Users\\a2019\\OneDrive\\Desktop\\Documentos\\Trabajo\\Gilat\\SistemaTramiteDoc\\SistemaTramiteDoc\\Views\\Solicitudes\\Inicio.cshtml",
+              "RelativeToolTip": "SistemaTramiteDoc\\Views\\Solicitudes\\Inicio.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-04T02:45:24.7Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

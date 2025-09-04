@@ -1,0 +1,283 @@
+﻿@{
+    Layout = null;
+    var solicitud = ViewBag.Solicitud as CapaModelo.Solicitud;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Trámite Documentario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Incluye Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Incluir el archivo JavaScript externo -->
+    <script src="../Scripts/MiCarpeta/SolicitudesDetalle.js"></script>
+    <script>
+        // Pasar la URL generada por Razor al archivo JavaScript
+        var modificarSolicitudesUrl = '@Url.Action("Modificar", "DetalleSolicitud")';
+    </script>
+    
+
+</head>
+<style>
+    .bg-primary-dark {
+        background-color: #1d3872; /* Un azul más oscuro */
+    }
+
+    .btn-primary-dark {
+        background-color: #1d3872; /* Un azul más oscuro */
+        color: white; /* Color de la letra */
+        border-color: #1d3872; /* Color del borde */
+    }
+
+    .nav-link-custom {
+        background-color: #1d3872; /* Fondo azul oscuro */
+        color: white; /* Letra blanca */
+    }
+
+    .icon-button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 24px;
+        color: #007bff;
+    }
+
+        .icon-button:hover {
+            color: #0056b3;
+        }
+</style>
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary-dark  text-white d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="/Solicitudes/Inicio" class="me-4">
+                        <i class="bi bi-house-door" style="cursor: pointer; font-size: 2.0rem; color: white;"></i>
+                    </a>
+                    <span>Detalle Expediente - @solicitud.Titulo</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="javascript:void(0);" onclick="window.history.back();" class="me-4">
+                        <i class="bi bi-arrow-left-circle" style="cursor: pointer; font-size: 2.0rem; color: white;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row g-3">
+                    <!-- Primera columna -->
+                    <div class="col-md-5 me-0.5">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <strong>Nro Documento:</strong>
+                                <div>@solicitud.NumeroDoc</div>
+                            </div>
+                            <div class="col-md-12">
+                                <strong>Asunto:</strong>
+                                <div>@solicitud.Asunto</div>
+                            </div>
+                            <div class="col-md-12">
+                                <strong>Referencia:</strong>
+                                <textarea class="form-control" readonly rows="4" style="width:100%;">@solicitud.Referencia</textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Empresa:</strong>
+                                        <div>@solicitud.NombreEmpresa</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Tipo documento:</strong>
+                                        <div>@solicitud.TipoDoc</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Formato:</strong>
+                                        <div>@solicitud.NombreFormato</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Institucion:</strong>
+                                        <div>@solicitud.NombreInstitucion</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Proyecto</strong>
+                                        <div>@solicitud.NombreProyecto</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Fecha Emision:</strong>
+                                        <div>@solicitud.FechaEmision.ToString("dd/MM/yyyy")</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Fecha recepcion:</strong>
+                                        <div>@solicitud.FechaRecepcion.ToString("dd/MM/yyyy")</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Venc. Externo:</strong>
+                                        <div>@solicitud.FechaEventoExterno.ToString("dd/MM/yyyy")</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Venc.Interno:</strong>
+                                        <div>@solicitud.FechaVencInterno.ToString("dd/MM/yyyy")</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Plazo atencion:</strong>
+                                        <div>@solicitud.PlazoAtc</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <strong>Analista legal:</strong>
+                                <div>@solicitud.AnalistaNombre</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex justify-content-center">
+                        <div style="border-left: 4px solid #1d3872 ; height: 100%; ">
+                        </div>
+                    </div>
+                    <!-- Segunda columna -->
+                    <div class="col-md-6">
+                        <div class="row g-3">
+                            <div class="p-0 mb-0 border d-flex justify-content-center" style="margin-left: 24rem; width: 15rem; background-color: #41bfa0; ">
+                                <p class="text-white">@solicitud.NombreFase/ @solicitud.NombreEstado</p>
+                            </div>
+                            <div class="col-md-12" style="height: 160px;">
+                                <strong>Documentos adjuntos:</strong>
+                                <ul class="list-unstyled ps-0 mt-2">
+                                    @if (solicitud.NombresArchivos != null && solicitud.NombresArchivos.Count > 0)
+                                    {
+                                        for (int i = 0; i < solicitud.NombresArchivos.Count; i++)
+                                        {
+                                            <li class="d-flex">
+                                                <!-- Icono para descargar el archivo -->
+                                                <a href="@Url.Action("DescargarArchivo", "DetalleSolicitud", new { idSolicitud = solicitud.IdSolicitud, nombreArchivo = solicitud.NombresArchivos[i]})" target="_blank" class="me-3">
+                                                    <i class="bi bi-download" style="font-size: 1.5rem; color: #007bff;"></i>
+                                                </a>
+                                                <!-- Nombre del archivo -->
+                                                <span class="me-2">@solicitud.NombresArchivos[i]</span>
+                                                <!-- Icono para mostrar el archivo en una vista -->
+                                                <a href="@Url.Action("MostrarArchivo", "DetalleSolicitud", new {idSolicitud = solicitud.IdSolicitud, nombreArchivo = solicitud.NombresArchivos[i]})" target="_blank" class="ms-5">
+                                                    <i class="bi bi-eye" style="font-size: 1.5rem; color: #007bff;"></i>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li>No hay documentos adjuntos.</li>
+                                    }
+                                </ul>
+                            </div>
+                            <!-- Información de Empresa, Institución y Tipo Documento -->
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <strong>Responsable G.Legal:</strong>
+                                    <div>No Asignado</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Registrado por:</strong>
+                                    <div>@solicitud.FueRegistradoPor</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Fecha registro:</strong>
+                                    <div>@solicitud.FechaRegistro</div>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <strong>Ubicación:</strong>
+                                    <div style="white-space: nowrap;">Piso: @solicitud.Piso / Estante: @solicitud.Estante / File: @solicitud.File</div>
+                                </div>
+                                <div class="col-md-4 ms-auto">
+                                    <strong>Penalidad:</strong>
+                                    <div>@solicitud.Penalidad</div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 120px;"></div>
+                            <!-- Botones -->
+                            <div class="row mt-5 text-center">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary-dark w-100" onclick="confirmarModificar(2)">Admitir</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary-dark w-100" onclick="confirmarRechazar(8)"> Rechazar</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary-dark w-100 " onclick="window.location.href = '/Solicitudes/Inicio';">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="RechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    ¿Desea rechazar el expediente?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="aceptarButton">Aceptar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModificarModal" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    ¿Desea admitir el expediente?, se le asignara a usted como responsable de la atencion.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="modificarButton">Aceptar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Definir una variable JavaScript con el valor de @solicitud.NumeroDoc
+        var numeroDoc = '@solicitud.NumeroDoc';
+    </script>
+
+</body>
+</html>

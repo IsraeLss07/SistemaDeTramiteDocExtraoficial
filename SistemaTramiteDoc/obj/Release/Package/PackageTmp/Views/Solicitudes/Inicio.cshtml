@@ -1,0 +1,791 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Trámite Documentario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Luego Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <!-- Luego cargar DataTables -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables CSS (opcional, pero recomendado para el diseño) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Incluye Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <style>
+        .approval-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+            .approval-header i {
+                font-size: 20px;
+                color: #0078d4;
+            }
+
+        .approval-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .approval-body {
+            font-size: 14px;
+            color: #495057;
+            margin-bottom: 12px;
+        }
+
+        .dataTables_filter {
+            display: none;
+        }
+
+        .approval-body a {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+            .approval-body a:hover {
+                text-decoration: underline;
+            }
+
+        .attachment {
+            background-color: #f1f3f5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .bg-primary-dark {
+            background-color: #1d3872; /* Un azul más oscuro */
+        }
+
+        .btn-primary-dark {
+            background-color: #1d3872; /* Un azul más oscuro */
+            color: white; /* Color de la letra */
+            border-color: #1d3872; /* Color del borde */
+        }
+
+        .nav-link-custom {
+            background-color: #1d3872; /* Fondo azul oscuro */
+            color: white; /* Letra blanca */
+        }
+
+        .icon-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #007bff;
+        }
+
+            .icon-button:hover {
+                color: #0056b3;
+            }
+
+        .dataTables_filter {
+            display: none;
+        }
+        .modal-custom-width {
+            max-width: 600px; /* Ajusta el ancho según lo que necesites */
+        }
+    </style>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary-dark text-white d-flex align-items-center justify-content-between">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex align-items-center">
+                        <a href="/Solicitudes/Inicio" class="me-3">
+                            <i class="bi bi-house-door" style="cursor: pointer; font-size: 1.5rem; color: white;"></i>
+                        </a>
+                        <span class="fw-bold">Sistema de trámite documentario</span>
+                    </div>
+                    <span class="fw-light">Bienvenido @ViewBag.Nombres / Rol: <span id="user-role"> </span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="text" id="customSearchBox" class="form-control me-2" placeholder="Buscar por el nro de expediente o documento" style="width: 22rem;">
+
+                    <a href="javascript:void(0);" class="me-3">
+                        <i class="bi bi-funnel" style="cursor: pointer; font-size: 1.5rem; color: white;"></i>
+                    </a>
+                    <button type="button" class="btn btn-sm btn-success" id="addNewButton" onclick="window.location.href='/Solicitudes/RegistrarSolicitud'">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Tabs Navigation -->
+                <div class="d-flex align-items-center">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">Analista Legal</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="areas-tab" data-bs-toggle="tab" data-bs-target="#areas" type="button" role="tab" aria-controls="areas" aria-selected="false">Colaborador</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="aprobadores-tab" data-bs-toggle="tab" data-bs-target="#aprobadores" type="button" role="tab" aria-controls="aprobadores" aria-selected="false">Aprobador</button>
+                        </li>
+                    </ul>
+                </div>
+                <hr style="border: 1px solid blue; margin: 1rem 0;">
+
+                <!-- Tabs Content -->
+                <div class="tab-content mt-3" id="myTabContent">
+                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <table id="tbdata" class="table table-bordered table-striped">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Nro.Exp2</th>
+                                            <th>Nro.Exp</th>
+                                            <th>Nro.Documento</th>
+                                            <th>Asunto</th>
+                                            <th>F.Vencimiento Externo</th>
+                                            <th>Analista legal</th>
+                                            <th>Areas Externas</th>
+                                            <th>Fase</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="areas" role="tabpanel" aria-labelledby="areas-tab">
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <table id="tbdata2" class="table table-striped table-bordered nowrap compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Nro.Exp</th>
+                                            <th>Nro.Documento</th>
+                                            <th>Asunto</th>
+                                            <th>F.Vencimiento Externo</th>
+                                            <th>Analista legal</th>
+                                            <th>Areas Externas</th>
+                                            <th>Fase</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="aprobadores" role="tabpanel" aria-labelledby="aprobadores-tab">
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <table id="tbdata3" class="table table-striped table-bordered nowrap compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Nro.Exp</th>
+                                            <th>Nro.Documento</th>
+                                            <th>Asunto</th>
+                                            <th>F.Vencimiento Externo</th>
+                                            <th>Analista legal</th>
+                                            <th>Areas Externas</th>
+                                            <th>Fase</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!-- Modal -->
+<div class="modal fade" id="approvalModal" tabindex="-1" aria-labelledby="approvalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom-width">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="approvalModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="approval-header d-flex align-items-center gap-2">
+                    <i class="bi bi-check-circle" style="color: #0078d4; font-size: 20px;"></i>
+                    <span>Sistema Tramite Documentario</span>
+                </div>
+
+                <div class="approval-title fw-bold mb-2">
+                </div>
+
+                <div class="approval-body mb-3" style="font-size: 14px; color: #495057;">
+                    <br><br>
+                    Link a documentos:<br>
+                    <a href="https://gilatsatnet.sharepoint.com/sites/TramiteDocumentarioLegal/DocumentosTramite/EXP-GNP-00012-2025/Respuesta" target="_blank">
+                        https://gilatsatnet.sharepoint.com/sites/TramiteDocumentarioLegal/DocumentosTramite/EXP-GNP-00012-2025/Respuesta
+                    </a>
+                    <br><br>
+                    Sistema de Trámite Documentario <br>
+                    <strong>Gerencia Legal</strong>
+                </div>
+
+                <div class="attachment bg-light p-2 rounded d-flex align-items-center gap-2">
+                </div>
+
+                <div class="mb-3">
+                    <label for="comments" class="form-label">Comentarios</label>
+                    <textarea class="form-control" id="comments" rows="3" placeholder="Agrega tus comentarios..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-danger" id="btn-reject">Rechazar</button>
+                <button class="btn btn-primary" id="btn-approve">Aprobar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $.extend({ MisUrls: { url: {}, urls: function (a) { $.extend($.MisUrls.url, a); } } });
+
+        //CONTROLADOR Solicitudes
+        $.MisUrls.urls({ _ObtenerSolicitudes: '@Url.Action("Obtener", "Solicitudes")' });
+        $.MisUrls.urls({ _GuardarSolicitud: '@Url.Action("Guardar", "Solicitudes")' });
+        $.MisUrls.urls({ _ObtenerSolicitudesPorParametros: '@Url.Action("ObtenerPorExpDoc", "Solicitudes")' });
+        $.MisUrls.urls({ _ObtenerSolicitudesColaboradores: '@Url.Action("ObtenerSolicitudesColaborador", "Solicitudes")' });
+        $.MisUrls.urls({ _ObtenerSolicitudeJefes: '@Url.Action("ObtenerSolicitudesJefes", "Solicitudes")' });
+
+        //CONTROLADOR DetalleSolicitud
+        $.MisUrls.urls({ _ObtenerSolicitud: '@Url.Action("Obtener", "DetalleSolicitud")' });
+        $.MisUrls.urls({ _ModificarSolicitudes: '@Url.Action("Modificar", "DetalleSolicitud")' });
+        $.MisUrls.urls({ _ModificarSolicitudesDetalle: '@Url.Action("ModificarDetalle", "DetalleSolicitud")' });
+
+        //CONTROLADOR SubSolicituddes
+
+        $.MisUrls.urls({ _ObtenerSubSolicitudes: '@Url.Action("Guardar", "SubSolicitudes")' });
+
+        //CONTROLADOR DetalleSolicitud
+        $.MisUrls.urls({ _CambiarEstadoSubSolicitudJefe: '@Url.Action("CambiarEstadoSubSolicitudJefe", "Solicitudes")' });
+
+        //lenguaje español datatable
+        $.MisUrls.urls({
+            Url_datatable_spanish: '@Url.Content("~/content/plugins/datatables/js/datatable_spanish.json")'
+        });
+</script>
+
+<script>
+    var roleId = @Html.Raw(Json.Encode(ViewBag.RoleId));
+    var id =@ViewBag.Id
+    var nombres="@ViewBag.Nombres"
+    var tabladata;
+    var tabladata2;
+    var tabladata3;
+
+    $(document).ready(function () {
+        function handleTabChange(target) {
+            var roleSpan = $("#user-role");
+            var addNewButton = $("#addNewButton");
+            var areasExternas = $("#AreasExternas");
+
+            if (target === "general-tab") {
+                roleSpan.text("Analista Legal");
+                addNewButton.show();
+                areasExternas.hide();
+            } else if (target === "areas-tab") {
+                roleSpan.text("Colaborador");
+                addNewButton.hide();
+                areasExternas.show();
+            } else if (target === "aprobadores-tab") {
+                roleSpan.text("Aprobador");
+                addNewButton.hide();
+                areasExternas.show();
+            }
+        }
+
+        // Mostrar/ocultar pestañas según los roles del usuario
+        if (roleId.includes(1)) {
+            $('#general-tab').show();
+        } else {
+            $('#general-tab').hide();
+        }
+
+        if (roleId.includes(3)) {
+            $('#areas-tab').show();
+        } else {
+            $('#areas-tab').hide();
+        }
+
+        if (roleId.includes(4)) {
+            $('#aprobadores-tab').show();
+        } else {
+            $('#aprobadores-tab').hide();
+        }
+
+        // Manejar el evento de cambio de pestaña
+        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("id"); // Obtener el id de la pestaña activada
+            handleTabChange(target);
+        });
+
+        // Llamar a la función al cargar la página
+        handleTabChange("general-tab");
+        tabladata = $('#tbdata').DataTable({
+            "ajax": {
+                "url": $.MisUrls.url._ObtenerSolicitudes,
+                "type": "GET",
+                "datatype": "json",
+                "dataSrc": "data"
+            },
+            "columns": [
+                { "data": "IdSolicitud", "visible": false },
+                { "data": "Titulo", "title": "Nro. Exp" },
+                { "data": "NumeroDoc", "title": "Nro. Documento" },
+                { "data": "Asunto", "title": "Asunto" },
+                {
+                    "data": "FechaEventoExterno",
+                    "title": "F. Vencimiento Externo",
+                    "render": function (data) {
+                        return moment(data).format('DD/MM/YYYY'); // Formato de fecha opcional
+                    }
+                },
+                { "data": "AnalistaNombre", "title": "Analista Legal" },
+                { "data": "AreaExternaNombre", "title": "Áreas Externas" },
+                { "data": "NombreFase", "title": "Fase" },
+                { "data": "NombreEstado", "title": "Estado" },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return "<i class='fas fa-eye' style='cursor:pointer;' onclick='verDetalles(" + JSON.stringify(row) + ", " + roleId + ")'></i>";
+                    },
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "50px"
+                }
+
+            ],
+            "order": [[0, "desc"]],
+            "language": {
+                "url": $.MisUrls.url.Url_datatable_spanish
+            },
+            responsive: true
+        });
+        /*
+        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("id"); // Get the id of the activated tab
+            var roleSpan = $("#user-role");
+            var addNewButton = $("#addNewButton");
+            var areasExternas = $("#AreasExternas");
+
+            if (target === "general-tab") {
+                roleSpan.text("Analista Legal");
+                addNewButton.show();
+                areasExternas.hide();
+            } else if (target === "areas-tab") {
+                roleSpan.text("Colaborador");
+                addNewButton.hide();
+                areasExternas.show();
+            } else if (target === "aprobadores-tab") {
+                roleSpan.text("Colaborador");
+                addNewButton.hide();
+                areasExternas.show();
+            }
+        });
+        */
+    })
+
+    $('#areas-tab').on('shown.bs.tab', function (e) {
+        if (!$.fn.DataTable.isDataTable('#tbdata2')) {
+            tabladata2 = $('#tbdata2').DataTable({
+                "ajax": {
+                    "url": $.MisUrls.url._ObtenerSolicitudesColaboradores,
+                    "type": "GET",
+                    "data": { IdUsuario: id },
+                    "datatype": "json",
+                    "dataSrc": "data" // Asegúrate de que DataTables busca los datos en la propiedad "data"
+                },
+                "columns": [
+                    { "data": "Titulo", "title": "Nro. Exp" },
+                    { "data": "NumeroDoc", "title": "Nro. Documento" },
+                    { "data": "Asunto", "title": "Asunto" },
+                    {
+                        "data": "FechaEventoExterno",
+                        "title": "F. Vencimiento Externo",
+                        "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY'); // Formato de fecha opcional
+                        }
+                    },
+                    { "data": "AnalistaNombre", "title": "Analista Legal" },
+                    { "data": "AreaExternaNombre", "title": "Áreas Externas" },
+                    { "data": "NombreFase", "title": "Fase" },
+                    { "data": "NombreEstado", "title": "Estado" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return "<i class='fas fa-eye' style='cursor:pointer;' onclick='verDetalles(" + JSON.stringify(row) + ", " + roleId + ")'></i>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "50px"
+                    }
+                ],
+                "language": {
+                    "url": $.MisUrls.url.Url_datatable_spanish
+                },
+                responsive: true
+            });
+        }
+    });
+
+    $('#aprobadores-tab').on('shown.bs.tab', function (e) {
+        if (!$.fn.DataTable.isDataTable('#tbdata3')) {
+            tabladata3 = $('#tbdata3').DataTable({
+                "ajax": {
+                    "url": $.MisUrls.url._ObtenerSolicitudeJefes,
+                    "type": "GET",
+                    "data": { IdUsuario: id },
+                    "datatype": "json",
+                    "dataSrc": "data" // Asegúrate de que DataTables busca los datos en la propiedad "data"
+                },
+                "columns": [
+                    { "data": "Titulo", "title": "Nro. Exp" },
+                    { "data": "NumeroDoc", "title": "Nro. Documento" },
+                    { "data": "Asunto", "title": "Asunto" },
+                    {
+                        "data": "FechaEventoExterno",
+                        "title": "F. Vencimiento Externo",
+                        "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY'); // Formato de fecha opcional
+                        }
+                    },
+                    { "data": "AnalistaNombre", "title": "Analista Legal" },
+                    { "data": "AreaExternaNombre", "title": "Áreas Externas" },
+                    { "data": "NombreFase", "title": "Fase" },
+                    { "data": "NombreEstado", "title": "Estado" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return "<i class='fas fa-eye' style='cursor:pointer;' onclick='abrirApprovalModal(" + JSON.stringify(row)+ ")'></i>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "50px"
+                    }
+                ],
+                "language": {
+                    "url": $.MisUrls.url.Url_datatable_spanish
+                },
+                responsive: true
+            });
+        }
+    });
+    $('#customSearchBox').on('input', function () {
+        var activeTab = $('#myTab .nav-link.active').attr('id');
+        if (activeTab === 'general-tab') {
+            tabladata.search(this.value).draw();
+        } else if (activeTab === 'areas-tab') {
+            tabladata2.search(this.value).draw();
+        }
+    });
+
+    function abrirPopUpForm(json) {
+
+        //$("#txtid").val(0);
+
+        if (json != null) {
+
+            $("#nroDocumento").val(json.NumeroDoc);
+            $("#asunto").val(json.Asunto);
+            $("#referencia").val(json.Referencia);
+            $("#empresa").val(json.NombreEmpresa);
+            $("#tipoDoc").val(json.TipoDoc);
+            $("#formato").val(json.NombreFormato);
+            $("#institucion").val(json.NombreInstitucion);
+            $("#proyecto").val(json.NombreProyecto);
+            $("#plazo").val(json.PlazoAtc);
+            $("#penalidad").val(json.Penalidad);
+            $("#fechaEmision").val(json.FechaEmision);
+            $("#fechaRecepcion").val(json.FechaRecepcion);
+            $("#fVenInterno").val(json.FechaVencInterno);
+            $("#fVenExterno").val(json.FechaEventoExterno);
+            $("#piso").val(json.Piso);
+            $("#estante").val(json.Estante);
+            $("#file").val(json.File);
+            $("#analista").val(json.AnalistaNombre);
+
+
+        } else {
+            // Restablecer valores por defecto
+            $("#nroDocumento").val("");
+            $("#asunto").val("");
+            $("#referencia").val("");
+            $("#empresa").val($("#empresa option:first").val());
+            $("#tipoDoc").val($("#tipoDoc option:first").val());
+            $("#formato").val($("#formato option:first").val());
+            $("#institucion").val($("#institucion option:first").val());
+            $("#proyecto").val($("#proyecto option:first").val());
+            $("#plazo").val("");
+            $("#penalidad").val("");
+            $("#fechaEmision").val("");
+            $("#fechaRecepcion").val("");
+            $("#fVenInterno").val("");
+            $("#fVenExterno").val("");
+            $("#piso").val("");
+            $("#estante").val("");
+            $("#file").val("");
+            $("#analista").val($("#analista option:first").val());
+        }
+
+        $('#FormModal').modal('show');
+
+    }
+    /*
+    function Guardar() {
+
+            console.log("Validando...");
+
+            var request = {
+                objeto: {
+                    NumeroDoc: $("#nroDocumento").val(),
+                    Asunto: $("#asunto").val(),
+                    Referencia: $("#referencia").val(),
+                    NombreEmpresa: $("#empresa option:selected").text(), // Obtener el texto seleccionado
+                    NombreFormato: $("#formato option:selected").text(), // Obtener el texto seleccionado
+                    NombreProyecto: $("#proyecto option:selected").text(), // Obtener el texto seleccionado
+                    Penalidad: $("#penalidad").val(),
+                    NombreInstitucion: $("#institucion option:selected").text(), // Obtener el texto seleccionado
+                    TipoDoc: $("#tipoDoc option:selected").text(), // Obtener el texto seleccionado
+                    PlazoAtc: $("#plazo").val(),
+                    FechaVencInterno: $("#fVenInterno").val(),
+                    FechaEventoExterno: $("#fVenExterno").val(),
+                    FechaEmision: $("#fechaEmision").val(),
+                    FechaRecepcion: $("#fechaRecepcion").val(),
+                    Piso: $("#piso").val(),
+                    Estante: $("#estante").val(),
+                    File: $("#file").val(),
+                    AnalistaNombre: $("#analista option:selected").text()
+                }
+            };
+            console.log(request);
+
+            jQuery.ajax({
+                url: $.MisUrls.url._GuardarSolicitud,
+                type: "POST",
+                data: JSON.stringify(request),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.OperacionExitosa) {
+                        tabladata.ajax.reload();
+                        $('#FormModal').modal('hide');
+                    } else {
+                        swal("Mensaje", "No se pudo guardar los cambios", "warning");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                beforeSend: function () {
+                    // agregar lógica aquí si necesitas hacer algo antes de enviar la solicitud
+                }
+            });
+
+    }
+    */
+
+    function verDetalles(solicitud, roleId) {
+        let url;
+        let activeTab = $('#myTab .nav-link.active').attr('id');
+
+        if (activeTab === 'areas-tab') {
+            url = '/VistaColaborador/DetalleRespuesta?numeroDoc=' + encodeURIComponent(solicitud.NumeroDoc);
+        } else {
+            if (solicitud.NombreFase == 'Registrado') {
+                url = '/DetalleSolicitud/VerDetalles?numeroDoc=' + encodeURIComponent(solicitud.NumeroDoc);
+            } else if (solicitud.NombreFase == 'Rechazado') {
+                url = '/Solicitudes/Inicio';
+            } else {
+                url = '/DetalleSolicitud/VerDetalles2?numeroDoc=' + encodeURIComponent(solicitud.NumeroDoc);
+            }
+        }
+        if (activeTab === 'aprobadores-tab') {
+            url = '/VistaAprobador/DetalleAprobador?numeroDoc=' + encodeURIComponent(solicitud.NumeroDoc);
+        }
+        window.location.href = url;
+    }
+    function abrirApprovalModal(solicitud) {
+    // Llenar el contenido del modal con los datos de la solicitud
+    $('#approvalModalLabel').text('Solicitud de Aprobación: ' + solicitud.Titulo);
+    $('.approval-title').text('STD – Solicitud de Aprobación: ' + solicitud.Titulo);
+
+    // Inicializamos documentosHtml
+    var documentosHtml = '';
+
+    // Contenido del cuerpo del modal
+    $('.approval-body').html(
+        solicitud.AnalistaNombre + ' solicita la aprobación del documento correspondiente al expediente <strong>' + solicitud.Titulo + '</strong>.<br><br>' +
+        'Link a documentos:<br>' +
+        '<a href="https://gilatsatnet.sharepoint.com/sites/TramiteDocumentarioLegal/DocumentosTramite/EXP-GNP-00012-2025/Respuesta" target="_blank">' +
+        'https://gilatsatnet.sharepoint.com/sites/TramiteDocumentarioLegal/DocumentosTramite/EXP-GNP-00012-2025/Respuesta' +
+        '</a><br><br>' +
+        'Sistema de Trámite Documentario <br>' +
+        '<strong>Gerencia Legal</strong>'
+    );
+
+    $.ajax({
+        url: '@Url.Action("ObtenerSolicitudPorNroDoc1", "Solicitudes")', // Reemplaza "Solicitudes" con el nombre de tu controlador si es diferente
+        type: 'GET',
+        data: { numeroDoc: solicitud.NumeroDoc },
+        success: function (response) {
+            var solicitudCompleta = response.data;
+            if (solicitudCompleta.NombresArchivos && solicitudCompleta.NombresArchivos.length > 0) {
+                for (var i = 0; i < solicitudCompleta.NombresArchivos.length; i++) {
+                    if (solicitudCompleta.TipoArchivo[i] == 2) {
+                        var mostrarUrl = '@Url.Action("MostrarArchivo", "DetalleSolicitud", new { idSolicitud = "__ID__", nombreArchivo = "__NOMBRE__" })';
+                        mostrarUrl = mostrarUrl.replace("__ID__", solicitudCompleta.IdSolicitud).replace("__NOMBRE__", solicitudCompleta.NombresArchivos[i]);
+
+                        documentosHtml += '<a href="' + mostrarUrl + '" target="_blank" >Ver documento </a>';
+                    }
+                }
+            } else {
+                documentosHtml = '<span>No hay documentos adjuntos.</span>';
+            }
+
+            // Si hay documentos generados, los agregamos a algún contenedor (ajústalo según tu HTML)
+            $('.attachment').html(documentosHtml);
+
+            // Mostrar el modal
+            $('#approvalModal').modal('show');
+        },
+        error: function (error) {
+            console.error('Error al obtener la solicitud:', error);
+        }
+    });
+
+
+    $('#btn-approve').click(function() {
+        var comentarios = $('#comments').val();
+        var tipo = 1;
+        var idSolicitud = solicitud.IdSolicitud;
+
+        $.ajax({
+            url: '@Url.Action("CambiarEstadoSubSolicitudJefe", "Solicitudes")',
+            type: 'POST',
+            data: JSON.stringify({
+                idUsuario: id,
+                idSolicitud: idSolicitud,
+                comentarios: comentarios,
+                estado: tipo
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Aprobado',
+                        text: 'Solicitud aprobada exitosamente.',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#approvalModal').modal('hide');
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al aprobar la solicitud.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function (error) {
+                console.error('Error al aprobar la solicitud:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al aprobar la solicitud.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+    $('#btn-reject').click(function() {
+        var comentarios = $('#comments').val();
+        var tipo = 2;
+        var idSolicitud = solicitud.IdSolicitud;
+
+        $.ajax({
+            url: '@Url.Action("CambiarEstadoSubSolicitudJefe", "Solicitudes")',
+            type: 'POST',
+            data: JSON.stringify({
+                idUsuario: id,
+                idSolicitud: idSolicitud,
+                comentarios: comentarios,
+                estado: tipo
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Rechazado',
+                        text: 'Solicitud rechazada exitosamente.',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#approvalModal').modal('hide');
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al rechazar la solicitud.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function(error) {
+                console.error('Error al aprobar la solicitud:', error);
+                alert('Error al aprobar la solicitud.');
+            }
+        });
+    });
+}
+
+</script>

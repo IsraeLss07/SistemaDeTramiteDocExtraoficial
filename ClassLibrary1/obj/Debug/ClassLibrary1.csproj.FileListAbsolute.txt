@@ -1,0 +1,12 @@
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.AssemblyReference.cache
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\bin\Debug\ClassLibrary1.dll.config
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.xml
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CopyComplete
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+C:\Users\mlimo\Desktop\Proyecto1\SistemaTramiteDoc\ClassLibrary1\obj\Debug\ClassLibrary1.pdb

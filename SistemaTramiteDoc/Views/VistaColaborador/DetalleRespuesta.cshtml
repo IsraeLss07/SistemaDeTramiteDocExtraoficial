@@ -1,0 +1,563 @@
+﻿@{
+    Layout = null;
+    var solicitud = ViewBag.Solicitud as CapaModelo.Solicitud;
+    ViewBag.Title = "DetalleRespuesta";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Trámite Documentario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Incluye Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Incluir el archivo JavaScript externo -->
+    <script src="../Scripts/MiCarpeta/SolicitudesDetalle.js"></script>
+    <script>
+        // Pasar la URL generada por Razor al archivo JavaScript
+        var modificarSolicitudesUrl = '@Url.Action("Modificar", "DetalleSolicitud")';
+    </script>
+
+
+</head>
+<style>
+    .bg-primary-dark {
+        background-color: #1d3872; /* Un azul más oscuro */
+    }
+
+    .btn-primary-dark {
+        background-color: #1d3872; /* Un azul más oscuro */
+        color: white; /* Color de la letra */
+        border-color: #1d3872; /* Color del borde */
+    }
+
+    .nav-link-custom {
+        background-color: #1d3872; /* Fondo azul oscuro */
+        color: white; /* Letra blanca */
+    }
+
+    .icon-button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 24px;
+        color: #007bff;
+    }
+
+        .icon-button:hover {
+            color: #0056b3;
+        }
+</style>
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary-dark  text-white d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="/Solicitudes/Inicio" class="me-4">
+                        <i class="bi bi-house-door" style="cursor: pointer; font-size: 2.0rem; color: white;"></i>
+                    </a>
+                    <span>Sistema de tramite documentario - Detalle Expediente @solicitud.Titulo</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="javascript:void(0);" onclick="window.history.back();" class="me-4">
+                        <i class="bi bi-arrow-left-circle" style="cursor: pointer; font-size: 2.0rem; color: white;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row g-3">
+                    <!-- Primera columna -->
+                    <div class="col-md-4 me-0.5">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <strong>Nro Documento:</strong>
+                                <div>@solicitud.NumeroDoc</div>
+                            </div>
+                            <div class="col-md-12">
+                                <strong>Asunto:</strong>
+                                <div>@solicitud.Asunto</div>
+                            </div>
+                            <div class="col-md-12">
+                                <strong>Referencia de la solicitud:</strong>
+                                <textarea class="form-control" readonly rows="4" style="width:100%;">@solicitud.Referencia</textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <strong>Ubicación:</strong>
+                                <div style="white-space: nowrap;">Piso: @solicitud.Piso / Estante: @solicitud.Estante / File: @solicitud.File</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Fecha registro:</strong>
+                                        <div>@solicitud.FechaRegistro</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Fecha Recepcion:</strong>
+                                        <div>@solicitud.FechaRecepcion</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Venc. Externo:</strong>
+                                        <div>@solicitud.FechaEventoExterno</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Venc. Interno:</strong>
+                                        <div>@solicitud.FechaVencInterno</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Empresa:</strong>
+                                        <div>@solicitud.NombreEmpresa</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Tipo documento:</strong>
+                                        <div>@solicitud.TipoDoc</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Institucion:</strong>
+                                        <div>@solicitud.NombreInstitucion</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Proyecto:</strong>
+                                        <div>@solicitud.NombreProyecto</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Plazo atencion</strong>
+                                        <div>@solicitud.PlazoAtc</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Plazo Emision:</strong>
+                                        <div>@solicitud.FechaEmision</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <strong>Formato:</strong>
+                                        <div>@solicitud.NombreFormato</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Penalidad:</strong>
+                                        <div>@solicitud.Penalidad</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <strong>Nro de carta:</strong>
+                                <div></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex justify-content-center">
+                        <div style="border-left: 4px solid #1d3872 ; height: 100%; ">
+                        </div>
+                    </div>
+                    <!-- Segunda columna -->
+                    <div class="col-md-7">
+                        <div class="row g-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-md-12" style="height: 70px;">
+                                    <div class="d-flex align-items-center">
+                                        <strong>Documentos adjuntos:</strong>
+                                        <div class="p-0 mb-0 border d-flex justify-content-center ms-auto" style="width: 15rem; background-color: #41bfa0;">
+                                            <p class="text-white">@solicitud.NombreFase / @solicitud.NombreEstado</p>
+                                        </div>
+                                    </div>
+                                    <ul class="list-unstyled ps-0 mt-2">
+                                        @if (solicitud.NombresArchivos != null && solicitud.NombresArchivos.Count > 0)
+                                        {
+                                            for (int i = 0; i < solicitud.NombresArchivos.Count; i++)
+                                            {
+                                                <li class="d-flex">
+                                                    <!-- Icono para descargar el archivo -->
+                                                    <a href="@Url.Action("DescargarArchivo", "DetalleSolicitud", new { idSolicitud = solicitud.IdSolicitud, nombreArchivo = solicitud.NombresArchivos[i]})" target="_blank" class="me-3">
+                                                        <i class="bi bi-download" style="font-size: 1.5rem; color: #007bff;"></i>
+                                                    </a>
+                                                    <!-- Nombre del archivo -->
+                                                    <span class="me-2">@solicitud.NombresArchivos[i]</span>
+                                                    <!-- Icono para mostrar el archivo en una vista -->
+                                                    <a href="@Url.Action("MostrarArchivo", "DetalleSolicitud", new {idSolicitud = solicitud.IdSolicitud, nombreArchivo = solicitud.NombresArchivos[i]})" target="_blank" class="ms-5">
+                                                        <i class="bi bi-eye" style="font-size: 1.5rem; color: #007bff;"></i>
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li>No hay documentos adjuntos.</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 70px;"></div>
+                            <hr style="border: 1px solid blue; margin: 1rem 0;">
+                            <div class="col-md-12">
+                                <strong style="margin-bottom: 13px; display: block;">Solicitudes áreas externas:</strong>
+                                <table id="tablaSubsolicitudesColaboradores" class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Área</th>
+                                            <th>Fecha Solicitud</th>
+                                            <th>Asunto</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12" style="height: 70px;">
+                                <div class="d-flex align-items-center">
+                                    <strong>Documentos enviados:</strong>
+                                </div>
+                                <ul class="list-unstyled ps-0 mt-2">
+                                    @if (solicitud?.SubSolicitudes != null && solicitud.SubSolicitudes.Count > 0)
+                                    {
+                                        for (int i = 0; i < solicitud.SubSolicitudes.Count; i++)
+                                        {
+                                            if (solicitud.SubSolicitudes[i]?.NombresArchivos != null)
+                                            {
+                                                for (int j = 0; j < solicitud.SubSolicitudes[i].NombresArchivos.Count; j++)
+                                                {
+                                                    if (solicitud.SubSolicitudes[i].NombresArchivos[j] != null)
+                                                    {
+                                                        <li class="d-flex" id="archivo-@i-@j" style="display: none;">
+                                                            <!-- Icono para descargar el archivo -->
+                                                            <a href="@Url.Action("DescargarArchivo", "DetalleSolicitud", new { idSolicitud = solicitud.IdSolicitud, nombreArchivo = solicitud.SubSolicitudes[i].NombresArchivos[j]})" target="_blank" class="me-3">
+                                                                <i class="bi bi-download" style="font-size: 1.5rem; color: #007bff;"></i>
+                                                            </a>
+                                                            <!-- Nombre del archivo -->
+                                                            <span class="me-2">@solicitud.SubSolicitudes[i].NombresArchivos[j]</span>
+                                                            <!-- Icono para mostrar el archivo en una vista -->
+                                                            <a href="@Url.Action("MostrarArchivo", "DetalleSolicitud", new { idSolicitud = solicitud.IdSolicitud, nombreArchivo = solicitud.SubSolicitudes[i].NombresArchivos[j] })" target="_blank" class="ms-5">
+                                                                <i class="bi bi-eye" style="font-size: 1.5rem; color: #007bff;"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li>No hay documentos adjuntos.</li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="row" style="margin-top: 180px;"></div>
+                            <div class="col-md-12">
+                                <strong style="margin-bottom: 15px; display: block;">Comentarios analista legal:</strong>
+                                <textarea class="form-control bg-danger-subtle" rows="3" readonly>@solicitud.Comentarios</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="cargarDocumento2" tabindex="-1" aria-labelledby="cargarDocumento2Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: #41bfa0;">
+                <div class="modal-header" style="color: white;">
+                    <h5 class="modal-title" id="uploadModalLabel">Cargar documentos de respuesta y enviarlos al analista legal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #41bfa0; padding: 20px;">
+                    <div class="mb-3 border rounded p-3" style="background-color: white;">
+                        <div class="file-upload mb-3">
+                            <span id="file-status" class="small">There is nothing attached.</span>
+                            <input type="file" id="file-input" style="display: none;" multiple>
+                            <div>
+                                <a class="attach-file small" id="attach-file" style="cursor: pointer; color: black; text-decoration: none;">
+                                    <i class="bi bi-paperclip"></i> Attach file
+                                </a>
+                            </div>
+                            <div id="file-list" class="mt-2"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control small" id="comments" placeholder="Ingrese comentarios del envío" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="confirmCargarDoc2" onclick='cargarDoc2()' disabled>Aceptar</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal" id="cancel-btn" style="background-color: #1d3872">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+        $.extend({ MisUrls: { url: {}, urls: function (a) { $.extend($.MisUrls.url, a); } } });
+
+
+        //CONTROLADOR VistaColaborador:
+
+        $.MisUrls.urls({ _ObtenerSubSolicitudesColaboradores: '@Url.Action("Obtener", "VistaColaborador")' });
+        $.MisUrls.urls({ _CambiarEstadoSubSolicitud: '@Url.Action("CambiarEstadoSubSolicitud", "VistaColaborador")' });
+
+        //lenguaje español datatable
+        $.MisUrls.urls({
+            Url_datatable_spanish: '@Url.Content("~/content/plugins/datatables/js/datatable_spanish.json")'
+        });
+</script>
+
+
+<script>
+    // Definir una variable JavaScript con el valor de @solicitud.NumeroDoc
+    var numeroDoc = '@solicitud.NumeroDoc';
+    var idSolicitud = '@solicitud.IdSolicitud'
+    let selectedFiles = [];
+
+    $(document).ready(function () {
+        actualizarTablaSubSolicitudResposables();
+        verificarYMostrarArchivos();
+
+        // Abrir el selector de archivos al hacer clic en el enlace "Attach file"
+        $('#attach-file').click(function () {
+            $('#file-input').click();
+        });
+
+        // Manejar la selección de archivos
+        $('#file-input').change(function () {
+            const files = $(this)[0].files;
+            const fileList = $('#file-list');
+            fileList.empty();
+            //selectedFiles = [];
+
+            for (let i = 0; i < files.length; i++) {
+                selectedFiles.push(files[i]);
+            }
+            checkFormValidity();
+
+            for (let i = 0; i < selectedFiles.length; i++) {
+                console.log("Archivo " + (i + 1) + ": " + selectedFiles[i].name + ", ContentType: " + selectedFiles[i].type);
+            }
+
+
+            if (selectedFiles.length > 0) {
+                $('#file-status').text(selectedFiles.length + ' file(s) attached.');
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const file = selectedFiles[i];
+                    const fileItem = $('<div class="file-item"></div>').text(file.name);
+                    const removeButton = $('<button class="btn btn-sm btn-danger ms-2">Remove</button>').click(function () {
+                        removeFile(i);
+                    });
+                    fileItem.append(removeButton);
+                    fileList.append(fileItem);
+                }
+            } else {
+                $('#file-status').text('There is nothing attached.');
+            }
+            $('#comments').on('input', function () {
+                checkFormValidity();
+            });
+        });
+
+        // Función para eliminar un archivo de la lista
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            const fileList = $('#file-list');
+            fileList.empty();
+
+            if (selectedFiles.length > 0) {
+                $('#file-status').text(selectedFiles.length + ' file(s) attached.');
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const file = selectedFiles[i];
+                    const fileItem = $('<div class="file-item"></div>').text(file.name);
+                    const removeButton = $('<button class="btn btn-sm btn-danger ms-2">Remove</button>').click(function () {
+                        removeFile(i);
+                    });
+                    fileItem.append(removeButton);
+                    fileList.append(fileItem);
+                }
+            } else {
+                $('#file-status').text('There is nothing attached.');
+            }
+        }
+        $('#comments').on('input', function () {
+            checkFormValidity();
+        });
+
+    });
+
+
+    function actualizarTablaSubSolicitudResposables() {
+    $.ajax({
+        url: $.MisUrls.url._ObtenerSubSolicitudesColaboradores, // Asegúrate de que esta URL sea correcta
+        type: 'GET',
+        data: { IdSolicitud: idSolicitud }, // Pasa el parámetro IdSolicitud
+        dataType: "json",
+        success: function (response) {
+            console.log(response); // Depura la respuesta
+            var subSolicitudes = response.data;
+            var tbody = $("#tablaSubsolicitudesColaboradores tbody");
+            tbody.empty(); // Limpia el contenido actual de la tabla
+            subSolicitudes.forEach(function (SubSolicitud) {
+                var comentario = SubSolicitud.Comentario ? SubSolicitud.Comentario : "Sin comentarios";
+                var fechaSolicitud = new Date(parseInt(SubSolicitud.FechaSolicitud.replace(/\/Date\((\d+)\)\//, '$1')));
+                var formattedDate = fechaSolicitud.toLocaleDateString('es-ES'); // Formato de fecha en español
+                var row = "<tr>" +
+                    "<td>" + SubSolicitud.NombreAreaExterna + "</td>" +
+                    "<td>" + formattedDate   + "</td>" +
+                    "<td>" + comentario + "</td>" +
+                    "<td><span class='badge bg-warning'>" + SubSolicitud.NombreEstado + "</span> ";
+                    if (SubSolicitud.NombreEstado == 'Pendiente' || SubSolicitud.NombreEstado=="Observado") {
+                        row += "<button class='btn btn-link btn-sm p-0 ms-4' data-bs-toggle='modal' data-bs-target='#cargarDocumento2' onclick='cargarDocumento2(" + SubSolicitud.IdSubSolicitud     + ")'><i class='bi bi-file-earmark-plus' style='color: #1d3872; font-size: 1.3rem;'></i></button>";
+                    }
+            row += "</tr>";
+            "</tr>";
+                tbody.append(row);
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+    }
+
+    function cargarDocumento2(idSubSolicitud) {
+        $('#confirmCargarDoc2').data('id', idSubSolicitud);
+    }
+
+    function cargarDoc2() {
+        var idSubSolicitud = $('#confirmCargarDoc2').data('id');
+        var comments = document.getElementById('comments').value;
+        var files = document.getElementById('file-input').files;
+        var formData = new FormData();
+        formData.append('IdSubSolicitud', idSubSolicitud);
+        formData.append('Comentario', comments);
+        formData.append('IdSolicitud', idSolicitud);
+
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append("Archivos[" + i + "]", selectedFiles[i]);
+            formData.append("NombresArchivos[" + i + "]", selectedFiles[i].name);
+            formData.append("ContentTypes[" + i + "]", selectedFiles[i].type);
+        }
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        console.log(idSubSolicitud);
+
+        $.ajax({
+            url: $.MisUrls.url._CambiarEstadoSubSolicitud, // Asegúrate de que esta URL sea correcta
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.OperacionExitosa) {
+                    // Actualiza la tabla después de cambiar el estado de la subsolicitud
+                    actualizarTablaSubSolicitudResposables();
+                    location.reload();
+                } else {
+                    console.error("Error al cambiar el estado de la subsolicitud:", response.message);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+        $('#cargarDocumento2').modal('hide');
+
+    }
+    /*
+    document.getElementById('attach-file').addEventListener('click', function() {
+        document.getElementById('file-input').click();
+    });
+
+    document.getElementById('file-input').addEventListener('change', function() {
+        var fileName = this.files[0].name;
+        document.getElementById('file-status').textContent = fileName;
+        checkFormValidity();
+    });
+
+    document.getElementById('comments').addEventListener('input', function() {
+        checkFormValidity();
+    });*/
+
+    function checkFormValidity() {
+        var fileInput = document.getElementById('file-input').files.length > 0;
+        var comments = document.getElementById('comments').value.trim() !== '';
+        document.getElementById('confirmCargarDoc2').disabled = !(fileInput && comments);
+    }
+
+    function verificarYMostrarArchivos() {
+        @if (solicitud?.SubSolicitudes != null)
+        {
+            for (int i = 0; i < solicitud.SubSolicitudes.Count; i++)
+            {
+                var idSubSolicitud = solicitud.SubSolicitudes[i]?.IdSubSolicitud;
+                if (solicitud.SubSolicitudes[i]?.NombresArchivos != null)
+                {
+                    for (int j = 0; j < solicitud.SubSolicitudes[i].NombresArchivos.Count; j++)
+                    {
+                        var idSolicitud = solicitud.IdSolicitud;
+                        var nombreArchivo = solicitud.SubSolicitudes[i].NombresArchivos[j];
+                        <text>
+                        $.ajax({
+                            url: '@Url.Action("VerificarArchivo", "DetalleSolicitud")',
+                            type: 'GET',
+                            data: { idSolicitud: @idSolicitud, nombreArchivo: '@nombreArchivo', idSubSolicitud: @idSubSolicitud },
+                            success: function (data) {
+                                if (data) {
+                                    $('#archivo-@i-@j').show();
+                                } else {
+                                    $('#archivo-@i-@j').hide();
+                                }
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                        });
+                        </text>
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
